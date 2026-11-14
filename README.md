@@ -10,8 +10,8 @@ with the Python standard library only: a tall stack of golden pancakes on
 a white ceramic plate, maple syrup poured over the top and dripping down
 the sides, a pat of melting butter, fresh blueberries, strawberries and
 mint, a dusting of powdered sugar — on a warm wooden table in soft
-morning light, with a cup of coffee, a fork and a folded napkin beside
-it. Warm colour, glossy syrup, visible texture: built to make a viewer
+morning light, with a cup of coffee, a glass of fresh orange juice,
+a fork and a folded napkin beside it. Warm colour, glossy syrup, visible texture: built to make a viewer
 hungry at one look, and to still read as one delicious dish at ~300
 pixels across.
 
@@ -35,8 +35,8 @@ library: `hashlib`, `math`, `os`, `random`, `struct`, `sys`, `zlib`.
 ## Verification
 
 - Two fresh runs produce byte-identical output
-  (sha256 `64fc62f7130216d096113fff4238800cc83f4a4d8f41a08dcf6afcaf60574225`)
-- Output: valid PNG, 1024×1024, 104,150 bytes (limit: 1 MiB, 1024×1024)
+  (sha256 `6cee1aff29aceb5d850519daba43a05be40730ada4bf25d29b9ae7e273b4a884`)
+- Output: valid PNG, 1024×1024, 108,818 bytes (limit: 1 MiB, 1024×1024)
 - Runtime: ~2.8 s per run (limit: 60 s)
 
 ## License

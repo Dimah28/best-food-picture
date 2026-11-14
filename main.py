@@ -33,6 +33,17 @@ Revision notes (v3)
   picture and a diagonal sunbeam; the table gains wood-grain knots.
 - A soft vignette darkens the corners so the eye stays on the stack.
 
+Revision notes (v4)
+-------------------
+- A glass of fresh orange juice joins the scene at the lower right:
+  a clear trapezoid glass, orange juice with pulp, a red-and-white
+  striped straw leaning out, a light glint on the glass and a soft
+  shadow on the table.
+- Pancake crumbs and a dusting of cinnamon now sit on the plate next
+  to the stack, so the dish looks freshly served rather than staged.
+- The straw leans a little further out and the juice carries extra
+  pulp, so the glass reads as freshly squeezed at a glance.
+
 There is no network access, no randomness that is not seeded, and no
 external asset: the same run always writes the same bytes, so the two
 sandbox runs required by the bounty produce identical files.
@@ -94,6 +105,10 @@ MINT = (52, 140, 74)
 NAPKIN = (168, 180, 196)
 WHITE = (250, 250, 246)
 COFFEE = (62, 36, 20)
+JUICE = (240, 140, 30)
+JUICE_LIGHT = (255, 182, 84)
+JUICE_DARK = (208, 108, 16)
+STRAW_RED = (214, 48, 48)
 
 
 # ------------------------------------------------------------ primitives ---
@@ -525,6 +540,65 @@ def draw_fork():
         line(x0, y0, x0 - 16, y0 + 44, 4, (196, 200, 206))
 
 
+def draw_orange_juice():
+    """A glass of fresh orange juice, lower right, with a striped straw.
+
+    The glass is a trapezoid, wider at the top; the juice sits just
+    below the rim, with darker juice at the bottom and pale pulp dots
+    floating in it. A red-and-white straw leans out to the upper right.
+    """
+    # soft shadow on the table under the glass
+    fill_ellipse_alpha(930, 1004, 64, 12, (0, 0, 0), 0.25)
+    # glass body: a pale, almost-clear trapezoid
+    fill_poly([(884, 884), (976, 884), (962, 1002), (898, 1002)],
+              (214, 226, 230))
+    # juice inside, a little below the rim and inside the walls
+    fill_poly([(890, 898), (970, 898), (958, 996), (902, 996)], JUICE)
+    fill_poly([(902, 968), (958, 968), (956, 996), (904, 996)], JUICE_DARK)
+    # juice surface seen from slightly above
+    fill_ellipse(930, 898, 40, 7, JUICE_LIGHT)
+    fill_ellipse(930, 898, 26, 4, (255, 205, 130))
+    # pulp: pale orange flecks drifting in the juice
+    for _ in range(22):
+        px = rng.uniform(904, 954)
+        py = rng.uniform(908, 988)
+        fill_circle(px, py, rng.uniform(1.5, 3), (255, 196, 110))
+    # red-and-white striped straw, leaning further out to the upper right
+    sx0, sy0 = 952, 902
+    sx1, sy1 = 1012, 798
+    line(sx0, sy0, sx1, sy1, 10, WHITE)
+    steps = 9
+    for k in range(steps):
+        t0 = k / steps
+        t1 = (k + 0.55) / steps
+        if k % 2 == 0:
+            line(sx0 + (sx1 - sx0) * t0, sy0 + (sy1 - sy0) * t0,
+                 sx0 + (sx1 - sx0) * t1, sy0 + (sy1 - sy0) * t1,
+                 10, STRAW_RED)
+    # glass rim and a glint of light down the left side
+    line(884, 884, 976, 884, 4, (238, 244, 246), 0.85)
+    line(896, 902, 902, 986, 6, WHITE, 0.5)
+    fill_circle(900, 912, 4, WHITE)
+
+
+def draw_crumbs():
+    """Pancake crumbs on the table and cinnamon dust on the plate."""
+    # crumbs scattered on the table beside the juice glass
+    for _ in range(12):
+        a = rng.uniform(0, 2 * math.pi)
+        rr = rng.uniform(0, 1)
+        cx = 828 + 58 * rr * math.cos(a)
+        cy = 938 + 18 * rr * math.sin(a)
+        fill_circle(cx, cy, rng.uniform(1.5, 3.5), PAN_SIDE_DARK)
+    # cinnamon dusted over the plate rim, front right of the stack
+    for _ in range(18):
+        a = rng.uniform(0, 2 * math.pi)
+        rr = rng.uniform(0.35, 1)
+        cx = 612 + 52 * rr * math.cos(a)
+        cy = 822 + 14 * rr * math.sin(a)
+        fill_circle_alpha(cx, cy, rng.uniform(1, 2), (150, 92, 40), 0.75)
+
+
 def draw():
     draw_background()
     draw_coffee()
@@ -534,7 +608,9 @@ def draw():
     draw_syrup()
     draw_toppings()
     draw_plate_berries()
+    draw_crumbs()
     draw_fork()
+    draw_orange_juice()
     vignette()
 
 
